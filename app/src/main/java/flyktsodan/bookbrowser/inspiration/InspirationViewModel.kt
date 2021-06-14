@@ -4,32 +4,35 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import flyktsodan.bookbrowser.model.Book
-import flyktsodan.bookbrowser.model.availableBooks
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlin.random.Random
+import okio.IOException
 
-class InspirationViewModel : ViewModel() {
+// could be generic
+sealed class InspirationResult {
+    data class Success(val books: List<Book>) : InspirationResult()
+    data class Error(val error: Throwable) : InspirationResult()
+    object Loading : InspirationResult()
+}
+
+class InspirationViewModel(private val repository: InspirationRepository = InspirationRepository()) : ViewModel() {
 
     private val _inspirationResult = MutableLiveData<InspirationResult>()
     val inspirationResult: LiveData<InspirationResult> = _inspirationResult
 
+    var failCount = 0
+
     fun fetchBooks() {
         viewModelScope.launch {
             _inspirationResult.postValue(InspirationResult.Loading)
-            // simulate a slow api call
-            delay(5000)
-            val success = InspirationResult.Success(getBooks())
-            _inspirationResult.postValue(success)
-        }
-    }
+            val books = repository.fetchBooks()
 
-    private fun getBooks(): List<Book> {
-        val books = mutableListOf<Book>()
-        for (i in 0..100) {
-            books.add(availableBooks[Random.nextInt(0, 3)])
+            if (failCount > 0) {
+                val success = InspirationResult.Success(books)
+                _inspirationResult.postValue(success)
+            } else {
+                failCount++
+                _inspirationResult.postValue(InspirationResult.Error(IOException()))
+            }
         }
-        return books
     }
 }

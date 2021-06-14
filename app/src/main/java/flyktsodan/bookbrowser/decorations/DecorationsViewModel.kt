@@ -1,14 +1,17 @@
 package flyktsodan.bookbrowser.decorations
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.liveData
-import flyktsodan.bookbrowser.model.Book
+import androidx.lifecycle.asLiveData
+import flyktsodan.bookbrowser.inspiration.Book
 
-class DecorationsViewModel(
-    private val repository: DecorationRepository = DecorationRepository()
-) : ViewModel() {
+object Singleton {
+    val repository = DecorationRepository()
+    val viewModel = DecorationsViewModel()
+}
 
-    fun loadDecorationForBook(book: Book) = liveData {
-        emit(repository.fetchDecorationForBook(book))
-    }
+class DecorationsViewModel(private val repository: DecorationRepository = Singleton.repository) : ViewModel() {
+
+    fun loadDecorationForBook(book: Book) = repository.loadDecorations(book.bookId).asLiveData()
+
+    fun updateDecoration(book: Book) = repository.updateDecoration(book.bookId, Decoration(true))
 }

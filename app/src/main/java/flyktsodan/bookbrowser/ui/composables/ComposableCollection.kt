@@ -1,14 +1,16 @@
 package flyktsodan.bookbrowser.ui.composables
 
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,14 +22,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.google.accompanist.coil.rememberCoilPainter
 import flyktsodan.bookbrowser.decorations.Decoration
-import flyktsodan.bookbrowser.decorations.DecorationsViewModel
-import flyktsodan.bookbrowser.model.Book
-import flyktsodan.bookbrowser.model.availableBooks
+import flyktsodan.bookbrowser.inspiration.Book
+import flyktsodan.bookbrowser.inspiration.availableBooks
 import flyktsodan.bookbrowser.ui.theme.ComposePlaygroundTheme
 
 @Composable
 fun Error(onRetryClicked: () -> Unit) {
-    Text(text = "PEPEGA that didnt goo veryy welll")
+    Box(
+        modifier = Modifier
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        contentAlignment = Alignment.Center
+    ) {
+        Button(onClick = { onRetryClicked() }) {
+            Text(text = "ERROR - try again")
+        }
+    }
 }
 
 @Composable
@@ -35,18 +45,21 @@ fun Loader() {
     Text("Loading..")
 }
 
+@OptIn(ExperimentalAnimationApi::class)
 @Composable
-fun BookListRow(book: Book = availableBooks[0], decorationsViewModel: DecorationsViewModel = DecorationsViewModel()) {
+fun BookListRow(
+    book: Book = availableBooks[0],
+    decorations: Decoration = Decoration(false),
+    onClick: () -> Unit = {}
+) {
     Card(
         modifier = Modifier
+            .clickable { onClick() }
             .width(160.dp)
             .height(240.dp)
             .padding(8.dp),
         elevation = 8.dp,
     ) {
-        val decorations by decorationsViewModel.loadDecorationForBook(book).observeAsState(Decoration(false))
-        val decorationsValue = decorations
-
         Column {
             Box(
                 modifier = Modifier
@@ -70,14 +83,16 @@ fun BookListRow(book: Book = availableBooks[0], decorationsViewModel: Decoration
                         .align(Alignment.BottomCenter)
                         .background(MaterialTheme.colors.surface.copy(alpha = 0.5f))
                 )
-                if (decorationsValue.isRead) {
+                if (decorations.isRead) {
                     Box(
                         Modifier
                             .align(Alignment.Center)
-                            .background(color = Color.Red)
+                            .background(color = Color.Green.copy(alpha = 0.7f), shape = CircleShape)
                             .width(50.dp)
                             .height(50.dp)
-                    )
+                    ) {
+                        Text(text = "✔️", modifier = Modifier.align(Alignment.Center))
+                    }
                 }
             }
             Column(
