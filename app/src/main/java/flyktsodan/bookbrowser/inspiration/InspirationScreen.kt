@@ -43,7 +43,7 @@ fun InspirationScreen(viewModel: InspirationViewModel = viewModel()) {
 @Composable
 fun DefaultPreview() {
     ComposePlaygroundTheme {
-        InspirationScreen()
+        HorizontalBookList(availableBooks)
     }
 }
 
@@ -54,12 +54,11 @@ private fun HorizontalBookList(books: List<Book>, decorationsViewModel: Decorati
         items(items = books, itemContent = { book ->
 
             val decorations by decorationsViewModel.loadDecorationForBook(book).observeAsState(Decoration(false))
-            val decorationsValue = decorations
 
             BookListRow(
                 book = book,
-                decorations = decorationsValue,
-                onClick = { decorationsViewModel.updateDecoration(book, decorationsValue) })
+                decorations = decorations,
+                onClick = { decorationsViewModel.updateDecoration(book, decorations) })
         })
     }
 }
@@ -67,7 +66,7 @@ private fun HorizontalBookList(books: List<Book>, decorationsViewModel: Decorati
 @Composable
 private fun VerticalList(books: List<Book>) {
     LazyColumn {
-        items(10, itemContent = {
+        items(100, itemContent = {
             HorizontalBookList(books)
         })
     }

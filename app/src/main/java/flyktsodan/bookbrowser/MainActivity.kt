@@ -11,7 +11,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
 import flyktsodan.bookbrowser.inspiration.InspirationScreen
 import flyktsodan.bookbrowser.inspiration.InspirationViewModel
+import flyktsodan.bookbrowser.tracking.Tracker
 import flyktsodan.bookbrowser.ui.theme.ComposePlaygroundTheme
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
@@ -19,10 +21,14 @@ class MainActivity : ComponentActivity() {
 
     private val inspirationViewModel: InspirationViewModel by viewModels()
 
+    @Inject
+    lateinit var tracker: Tracker
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         inspirationViewModel.fetchBooks()
+        tracker.track("MainActivity created!")
 
         setContent {
             ComposePlaygroundTheme {
@@ -39,6 +45,6 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun DefaultPreview() {
     ComposePlaygroundTheme {
-//        InspirationScreen()
+        InspirationScreen()
     }
 }

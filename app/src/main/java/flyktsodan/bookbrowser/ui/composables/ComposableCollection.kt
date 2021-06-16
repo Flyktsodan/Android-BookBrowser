@@ -74,7 +74,7 @@ fun BookListRow(
                     contentDescription = "",
                     modifier = Modifier
                         .height(160.dp)
-                        .background(color = Color.Gray),
+                        .background(color = Color.DarkGray),
                     contentScale = ContentScale.Crop
                 )
                 Text(
@@ -82,6 +82,7 @@ fun BookListRow(
                     Modifier
                         .align(Alignment.BottomCenter)
                         .background(MaterialTheme.colors.surface.copy(alpha = 0.5f))
+                        .padding(8.dp)
                 )
                 if (decorations.isRead) {
                     Box(
