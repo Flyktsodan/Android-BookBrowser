@@ -9,27 +9,20 @@ data class Decoration(val isRead: Boolean)
 
 class DecorationRepository {
 
-    private val _memoryStoreMap = MutableStateFlow<MutableMap<Int, Decoration>>(mutableMapOf())
+    // simple in-memory map
+    private val memoryDecorationMap = MutableStateFlow<MutableMap<Int, Decoration>>(mutableMapOf())
 
-    fun loadDecorations(bookId: Int): Flow<Decoration> = _memoryStoreMap.map { map ->
+    fun loadDecorations(bookId: Int): Flow<Decoration> = memoryDecorationMap.map { map ->
         map[bookId] ?: Decoration(false)
     }
 
     fun updateDecoration(bookId: Int, decoration: Decoration) {
-        Log.d("TAG", "update value invoked")
-
-        val oldDecoration = _memoryStoreMap.value[bookId]
-        val newDecoration = if (oldDecoration != null) {
-            val isRead = oldDecoration.isRead
-            Decoration(isRead = !isRead)
-        } else {
-            Decoration(true)
-        }
+        Log.d("TAG", "updateDecoration - bookId: $bookId, decoration: $decoration")
+        // have to submit a new list to trigger a update in the StateFlow
         val newMap = mutableMapOf<Int, Decoration>()
-        newMap.putAll(_memoryStoreMap.value)
-        newMap[bookId] = newDecoration
+        newMap.putAll(memoryDecorationMap.value)
+        newMap[bookId] = decoration
 
-        // have to submit a new list to trigger a update
-        _memoryStoreMap.value = newMap
+        memoryDecorationMap.value = newMap
     }
 }

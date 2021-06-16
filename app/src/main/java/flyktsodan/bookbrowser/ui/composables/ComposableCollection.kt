@@ -63,7 +63,7 @@ fun BookListRow(
         Column {
             Box(
                 modifier = Modifier
-                    .background(color = Color.LightGray)
+                    .background(color = MaterialTheme.colors.surface)
                     .absolutePadding(left = 8.dp, right = 8.dp, top = 8.dp)
             ) {
                 Image(

@@ -4,8 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okio.IOException
+import javax.inject.Inject
 
 // could be generic
 sealed class InspirationResult {
@@ -14,7 +16,8 @@ sealed class InspirationResult {
     object Loading : InspirationResult()
 }
 
-class InspirationViewModel(private val repository: InspirationRepository = InspirationRepository()) : ViewModel() {
+@HiltViewModel
+class InspirationViewModel @Inject constructor(private val repository: InspirationRepository) : ViewModel() {
 
     private val _inspirationResult = MutableLiveData<InspirationResult>()
     val inspirationResult: LiveData<InspirationResult> = _inspirationResult

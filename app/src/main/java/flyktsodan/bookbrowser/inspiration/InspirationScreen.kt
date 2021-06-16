@@ -12,15 +12,16 @@ import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.lifecycle.viewmodel.compose.viewModel
 import flyktsodan.bookbrowser.decorations.Decoration
-import flyktsodan.bookbrowser.decorations.Singleton
+import flyktsodan.bookbrowser.decorations.DecorationsViewModel
 import flyktsodan.bookbrowser.ui.composables.BookListRow
 import flyktsodan.bookbrowser.ui.composables.Error
 import flyktsodan.bookbrowser.ui.composables.Loader
 import flyktsodan.bookbrowser.ui.theme.ComposePlaygroundTheme
 
 @Composable
-fun InspirationScreen(viewModel: InspirationViewModel = InspirationViewModel()) {
+fun InspirationScreen(viewModel: InspirationViewModel = viewModel()) {
     val inspirationResult: InspirationResult by viewModel.inspirationResult.observeAsState(InspirationResult.Loading)
     val result = inspirationResult
 
@@ -47,9 +48,8 @@ fun DefaultPreview() {
 }
 
 @Composable
-private fun HorizontalBookList(books: List<Book>) {
+private fun HorizontalBookList(books: List<Book>, decorationsViewModel: DecorationsViewModel = viewModel()) {
     LazyRow {
-        val decorationsViewModel = Singleton.viewModel
 
         items(items = books, itemContent = { book ->
 
@@ -59,7 +59,7 @@ private fun HorizontalBookList(books: List<Book>) {
             BookListRow(
                 book = book,
                 decorations = decorationsValue,
-                onClick = { decorationsViewModel.updateDecoration(book) })
+                onClick = { decorationsViewModel.updateDecoration(book, decorationsValue) })
         })
     }
 }
