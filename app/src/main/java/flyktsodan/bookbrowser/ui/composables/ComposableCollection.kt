@@ -6,9 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.Button
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
+import androidx.compose.material.*
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -42,14 +40,14 @@ fun Error(onRetryClicked: () -> Unit) {
 
 @Composable
 fun Loader() {
-    Text("Loading..")
+    CircularProgressIndicator()
 }
 
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun BookListRow(
     book: Book = availableBooks[0],
-    decorations: Decoration = Decoration(false),
+    decorations: Decoration = Decoration.default(),
     onClick: () -> Unit = {}
 ) {
     Card(
@@ -74,7 +72,7 @@ fun BookListRow(
                     contentDescription = "",
                     modifier = Modifier
                         .height(160.dp)
-                        .background(color = Color.DarkGray),
+                        .background(color = Color.Gray),
                     contentScale = ContentScale.Crop
                 )
                 Text(
@@ -113,6 +111,6 @@ fun BookListRow(
 @Composable
 fun DefaultPreview() {
     ComposePlaygroundTheme {
-        BookListRow()
+        Loader()
     }
 }

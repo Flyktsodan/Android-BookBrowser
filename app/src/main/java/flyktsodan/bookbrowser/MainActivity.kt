@@ -9,6 +9,8 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import dagger.hilt.android.AndroidEntryPoint
+import flyktsodan.bookbrowser.di.ApiTrackerA
+import flyktsodan.bookbrowser.di.LogcatTrackerA
 import flyktsodan.bookbrowser.inspiration.InspirationScreen
 import flyktsodan.bookbrowser.inspiration.InspirationViewModel
 import flyktsodan.bookbrowser.tracking.Tracker
@@ -22,6 +24,7 @@ class MainActivity : ComponentActivity() {
     private val inspirationViewModel: InspirationViewModel by viewModels()
 
     @Inject
+    @LogcatTrackerA
     lateinit var tracker: Tracker
 
     override fun onCreate(savedInstanceState: Bundle?) {

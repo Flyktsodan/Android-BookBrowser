@@ -48,7 +48,11 @@ fun DefaultPreview() {
 }
 
 @Composable
-private fun HorizontalBookList(books: List<Book>, decorationsViewModel: DecorationsViewModel = viewModel()) {
+private fun HorizontalBookList(
+    books: List<Book>,
+    decorationsViewModel: DecorationsViewModel = viewModel()
+) {
+
     LazyRow {
 
         items(items = books, itemContent = { book ->
@@ -58,7 +62,9 @@ private fun HorizontalBookList(books: List<Book>, decorationsViewModel: Decorati
             BookListRow(
                 book = book,
                 decorations = decorations,
-                onClick = { decorationsViewModel.updateDecoration(book, decorations) })
+                onClick = {
+                    decorationsViewModel.updateDecoration(book, decorations)
+                })
         })
     }
 }

@@ -5,7 +5,13 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.map
 
-data class Decoration(val isRead: Boolean)
+data class Decoration(val isRead: Boolean) {
+
+    companion object {
+        @JvmStatic
+        fun default() = Decoration(isRead = false)
+    }
+}
 
 class DecorationRepository {
 
@@ -13,7 +19,7 @@ class DecorationRepository {
     private val memoryDecorationMap = MutableStateFlow<MutableMap<Int, Decoration>>(mutableMapOf())
 
     fun loadDecorations(bookId: Int): Flow<Decoration> = memoryDecorationMap.map { map ->
-        map[bookId] ?: Decoration(false)
+        map[bookId] ?: Decoration.default()
     }
 
     fun updateDecoration(bookId: Int, decoration: Decoration) {

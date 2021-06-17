@@ -40,7 +40,7 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion = rootProject.extra["compose_version"] as String
-        kotlinCompilerVersion = "1.4.32"
+        kotlinCompilerVersion = "1.5.10"
     }
 }
 
@@ -53,7 +53,7 @@ dependencies {
     implementation("androidx.compose.material:material:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.ui:ui-tooling:${rootProject.extra["compose_version"]}")
     implementation("androidx.compose.runtime:runtime-livedata:${rootProject.extra["compose_version"]}")
-    implementation ("com.google.accompanist:accompanist-coil:0.11.1")
+    implementation ("com.google.accompanist:accompanist-coil:0.12.0")
 
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.3.1")
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
@@ -61,11 +61,12 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-viewmodel-compose:1.0.0-alpha06")
 
     implementation("androidx.datastore:datastore:1.0.0-beta01")
-    kapt("com.google.dagger:hilt-android-compiler:${rootProject.extra["hiltVersion"]}")
 
+    // Hilt
+    kapt("com.google.dagger:hilt-android-compiler:${rootProject.extra["hiltVersion"]}")
     implementation("com.google.dagger:hilt-android:${rootProject.extra["hiltVersion"]}")
 
-    implementation("androidx.activity:activity-compose:1.3.0-beta01")
+    implementation("androidx.activity:activity-compose:1.3.0-beta02")
     testImplementation("junit:junit:4.+")
     androidTestImplementation("androidx.test.ext:junit:1.1.2")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.3.0")
